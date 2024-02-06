@@ -553,9 +553,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 486946783}
+  virtualCamera: {fileID: 1705070094}
   animator: {fileID: 486946785}
   input: {fileID: 11400000, guid: 855e68d447938bd4d801d284b711c3c4, type: 2}
-  playerSpeed: 2
+  playerSpeed: 10
+  jumpSpeed: 0.2
+  gravity: -9.81
 --- !u!95 &486946785 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 0ea9938f66ac787418b8e7ce0622ffb6,
@@ -922,7 +925,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.5, z: 0}
-  m_LocalScale: {x: 20, y: 1, z: 20}
+  m_LocalScale: {x: 50, y: 1, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

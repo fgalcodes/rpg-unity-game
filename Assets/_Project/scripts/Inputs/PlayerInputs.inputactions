@@ -70,61 +70,6 @@
                     "action": "Walk",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "2D Vector",
-                    "id": "9a04ae47-9f79-4b06-bf36-ea463e1ccc19",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Walk",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "Up",
-                    "id": "53f8cab6-1d81-4f2b-85b2-4a8eb16c11a4",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Walk",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Down",
-                    "id": "23961906-4bac-4d8f-a638-ced3673e7a08",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Walk",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Left",
-                    "id": "737120fc-b5a3-42bf-92fb-681d882d8e6f",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Walk",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Right",
-                    "id": "81c253d2-879f-4fb2-944c-df1aa83cdf35",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Walk",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 }
             ]
         }

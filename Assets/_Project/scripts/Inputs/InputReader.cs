@@ -7,11 +7,13 @@ using static PlayerInputs;
 public class InputReader : ScriptableObject, IPlayerActions
 {
     public event UnityAction<Vector2> Move = delegate {  };
+    public event UnityAction<Vector2> Look = delegate {  };
     public event UnityAction<bool> Jump = delegate {  };
 
     private PlayerInputs inputActions;
 
     public Vector3 Direction => inputActions.Player.Walk.ReadValue<Vector2>();
+    public Vector3 Aim => inputActions.Player.Walk.ReadValue<Vector2>();
     public bool Jumping => inputActions.Player.Jump.triggered;
 
     void OnEnable()
@@ -31,5 +33,11 @@ public class InputReader : ScriptableObject, IPlayerActions
     public void OnJump(InputAction.CallbackContext context)
     {
         Jump.Invoke(context.ReadValueAsButton());
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        Look.Invoke(context.ReadValue<Vector2>());
+
     }
 }

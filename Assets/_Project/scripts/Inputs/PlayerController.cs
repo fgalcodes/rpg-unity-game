@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] CharacterController controller;
-    [SerializeField] CinemachineVirtualCamera virtualCamera;
     [SerializeField] Animator animator;
     [SerializeField] InputReader input;
 

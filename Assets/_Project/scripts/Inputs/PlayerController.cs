@@ -15,19 +15,27 @@ public class PlayerController : MonoBehaviour
     [SerializeField] InputReader input;
 
     float playerSpeed = 10.0f;
-    float jumpSpeed = 10.0f;
+    float jumpSpeed = 2.0f;
     float rotationSpeed = 180.0f;
+    float gravityValue = -9.81f;
+    float smoothTime = .2f;
+
 
     float currentSpeed;
     float velocity;
 
     const float ZeroF = 0.0f;
 
-    private Vector2 currentMovement;
+    private Vector3 playerVelocity;
+
+    [Header("Variables")]
     private bool movementPressed;
+    private bool isJumping;
+    public bool isGrounded;
     
     // Animator parameters
     private static readonly int Speed = Animator.StringToHash("Speed");
+    private static readonly int Jump = Animator.StringToHash("isJumping");
 
     private Transform mainCam;
 
@@ -38,24 +46,50 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        isGrounded = controller.isGrounded;
+
+        if (controller.isGrounded)
+        {
+            isJumping = false;
+        }
+        
         HandleMovement();
         HandleJump();
-        animator.SetFloat(Speed, currentSpeed);
+        UpdateAnimations();
         
+    }
+
+    private void UpdateAnimations()
+    {
+        animator.SetFloat(Speed, currentSpeed);
+        animator.SetBool(Jump, isJumping);
     }
 
     private void HandleJump()
     {
         if (input.Jumping)
         {
-            Vector3 jump = new Vector3(0,20f,0);
-            controller.Move(jump * (jumpSpeed * Time.deltaTime));
+            isJumping = true;
+            animator.CrossFade("Jumping", smoothTime);
+            //animator.SetBool(Jump, isJumping);
+
+            playerVelocity.y += Mathf.Sqrt(jumpSpeed * smoothTime * gravityValue);
+
+            var moveDirection = new Vector3(input.Direction.x, playerVelocity.y, input.Direction.y);
+            //moveDirection.y = playerVelocity.y += gravityValue * Time.deltaTime;
+
+            var ajustMovement = moveDirection * (Time.deltaTime * playerSpeed);
+            controller.Move(moveDirection);
         }
+
+       
+
     }
 
     private void HandleMovement()
     {
         var moveDirection = new Vector3(input.Direction.x, 0, input.Direction.y);
+
         var ajustDirection = Quaternion.AngleAxis(mainCam.eulerAngles.y, Vector3.up) * moveDirection;
 
         if (ajustDirection.magnitude > ZeroF)
@@ -76,6 +110,6 @@ public class PlayerController : MonoBehaviour
 
     private float SmoothSpeed(float value)
     {
-        return Mathf.SmoothDamp(currentSpeed, value, ref velocity, .2f);
+        return Mathf.SmoothDamp(currentSpeed, value, ref velocity, smoothTime);
     }
 }

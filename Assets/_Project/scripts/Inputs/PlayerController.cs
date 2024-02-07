@@ -14,8 +14,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Animator animator;
     [SerializeField] InputReader input;
 
-    [SerializeField] float playerSpeed = 2.0f;
-    [SerializeField] float jumpSpeed = 2.0f;
+    float playerSpeed = 10.0f;
+    float jumpSpeed = 10.0f;
+    float rotationSpeed = 180.0f;
 
     float currentSpeed;
     float velocity;
@@ -28,6 +29,13 @@ public class PlayerController : MonoBehaviour
     // Animator parameters
     private static readonly int Speed = Animator.StringToHash("Speed");
 
+    private Transform mainCam;
+
+    private void Awake()
+    {
+        mainCam = Camera.main.transform;
+    }
+
     void Update()
     {
         HandleMovement();
@@ -38,25 +46,36 @@ public class PlayerController : MonoBehaviour
 
     private void HandleJump()
     {
-        if (input.Jumping > ZeroF)
+        if (input.Jumping)
         {
-            Vector3 jump = new Vector3(0,jumpSpeed,0);
-            controller.Move(jump);
+            Vector3 jump = new Vector3(0,20f,0);
+            controller.Move(jump * (jumpSpeed * Time.deltaTime));
         }
     }
 
     private void HandleMovement()
     {
-        Vector3 move = new Vector3(input.Direction.x, 0, input.Direction.y);
-        
-        if (move.magnitude > ZeroF)
+        var moveDirection = new Vector3(input.Direction.x, 0, input.Direction.y);
+        var ajustDirection = Quaternion.AngleAxis(mainCam.eulerAngles.y, Vector3.up) * moveDirection;
+
+        if (ajustDirection.magnitude > ZeroF)
         {
-            controller.Move(move * (playerSpeed * Time.deltaTime));
-            currentSpeed = Mathf.SmoothDamp(currentSpeed, move.magnitude, ref velocity, .2f);
+            var targetRotation = Quaternion.LookRotation(ajustDirection);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            
+            var ajustMovement = ajustDirection * (Time.deltaTime * playerSpeed);
+            controller.Move(ajustMovement);
+            
+            currentSpeed = SmoothSpeed(moveDirection.magnitude);
 
         } else
         {
-            currentSpeed = Mathf.SmoothDamp(currentSpeed, ZeroF, ref velocity, .2f);
+            currentSpeed = SmoothSpeed(ZeroF);
         }
+    }
+
+    private float SmoothSpeed(float value)
+    {
+        return Mathf.SmoothDamp(currentSpeed, value, ref velocity, .2f);
     }
 }

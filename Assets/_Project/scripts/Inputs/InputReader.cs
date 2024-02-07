@@ -7,12 +7,12 @@ using static PlayerInputs;
 public class InputReader : ScriptableObject, IPlayerActions
 {
     public event UnityAction<Vector2> Move = delegate {  };
-    public event UnityAction<float> Jump = delegate {  };
+    public event UnityAction<bool> Jump = delegate {  };
 
     private PlayerInputs inputActions;
 
     public Vector3 Direction => inputActions.Player.Walk.ReadValue<Vector2>();
-    public float Jumping => inputActions.Player.Jump.ReadValue<float>();
+    public bool Jumping => inputActions.Player.Jump.triggered;
 
     void OnEnable()
     {
@@ -30,6 +30,6 @@ public class InputReader : ScriptableObject, IPlayerActions
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        Jump.Invoke(context.ReadValue<float>());
+        Jump.Invoke(context.ReadValueAsButton());
     }
 }

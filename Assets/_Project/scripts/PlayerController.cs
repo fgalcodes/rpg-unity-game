@@ -19,10 +19,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float gravityValue = -9.81f;
     [SerializeField] float rotationSpeed = 8f;
 
-    private const float ZeroF = 0.0f;
     private Transform mainCam;
 
+    private readonly int MoveX = Animator.StringToHash("MoveX");
+    private readonly int MoveZ = Animator.StringToHash("MoveZ");
+    private readonly int IsRunning = Animator.StringToHash("isRunning");
+    private readonly int Jump = Animator.StringToHash("Jumping");
+    
     bool jumpAnim;
+
+    private const float ZeroF = 0.0f;
+    private Vector2 blendVector;
+    private Vector2 animVelocity;
+    private float smoothTime = .2f;
+    private float animTransition = .15f;
 
     private void Start()
     {
@@ -32,10 +42,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         HandleMovement();
-        
     }
-
-
 
     private void HandleMovement()
     {
@@ -45,16 +52,22 @@ public class PlayerController : MonoBehaviour
             playerVelocity.y = 0f;
         }
 
-        Vector3 move = new Vector3(inputs.movement.x, 0, inputs.movement.y);
+        blendVector = Vector2.SmoothDamp(blendVector, inputs.movement, ref animVelocity, smoothTime);
+        
+        Vector3 move = new Vector3(blendVector.x, 0, blendVector.y);
         move = move.x * mainCam.right.normalized + move.z * mainCam.forward.normalized;
         move.y = ZeroF;
         controller.Move(move * (Time.deltaTime * playerSpeed));
+        
+        // animations
+        animator.SetFloat(MoveX, blendVector.x);
+        animator.SetFloat(MoveZ, blendVector.y);
 
         // Changes the height position of the player..
         if (inputs.jumping && groundedPlayer)
         {
-            animator.CrossFade("Jumping", ZeroF);
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+            animator.CrossFade(Jump, animTransition);
 
         }
 

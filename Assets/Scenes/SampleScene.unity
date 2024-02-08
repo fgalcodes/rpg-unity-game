@@ -431,8 +431,8 @@ MonoBehaviour:
   m_UpdateMethod: 2
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
-    m_Style: 1
-    m_Time: 2
+    m_Style: 6
+    m_Time: 1
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -712,8 +712,8 @@ MonoBehaviour:
   controller: {fileID: 486946783}
   inputs: {fileID: 11400000, guid: 855e68d447938bd4d801d284b711c3c4, type: 2}
   animator: {fileID: 486946788}
-  playerSpeed: 2
-  jumpHeight: 1
+  playerSpeed: 5
+  jumpHeight: 2
   gravityValue: -9.81
   rotationSpeed: 8
 --- !u!95 &486946788 stripped

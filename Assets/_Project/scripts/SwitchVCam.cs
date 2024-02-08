@@ -5,11 +5,10 @@ using UnityEngine.InputSystem;
 
 public class SwitchVCam : MonoBehaviour
 {
-    [SerializeField] PlayerInputs playerinputs;
     [SerializeField] int priorityBoosCam = 10;
-
     private CinemachineVirtualCamera _virtualCamera;
 
+    PlayerInputs playerinputs;
     private InputAction aimAction;
 
     private void Awake()

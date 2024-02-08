@@ -1,32 +1,44 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Cinemachine;
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SwitchVCam : MonoBehaviour
 {
-    [SerializeField] private InputReader input;
-    [SerializeField] private int priorityBoosCam = 10;
+    [SerializeField] PlayerInputs playerinputs;
+    [SerializeField] int priorityBoosCam = 10;
 
     private CinemachineVirtualCamera _virtualCamera;
 
-    private bool trigger;
+    private InputAction aimAction;
+
     private void Awake()
     {
         _virtualCamera = gameObject.GetComponent<CinemachineVirtualCamera>();
+       aimAction = playerinputs.FindAction("Aim");
     }
 
-  
 
-    void StartAim()
+    private void OnEnable()
+    {
+        aimAction.performed += _ => StartAim();
+        aimAction.canceled += _ => ExitAim();
+    }
+    private void OnDisable() { 
+
+        aimAction.performed -= _ => StartAim();
+        aimAction.canceled -= _ => ExitAim();
+    }
+
+    private void StartAim()
     {
         _virtualCamera.Priority += priorityBoosCam;
     }
-    
-    void ExitAim()
+
+    private void ExitAim()
     {
         _virtualCamera.Priority -= priorityBoosCam;
     }
+
+
 }

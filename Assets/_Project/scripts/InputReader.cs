@@ -14,10 +14,13 @@ public class InputReader : ScriptableObject, IPlayerActions
 
     private PlayerInputs inputActions;
 
+    public InputAction aimAction;
+
     public Vector3 movement => inputActions.Player.Move.ReadValue<Vector2>();
     public Vector3 looking => inputActions.Player.Look.ReadValue<Vector2>();
     public bool jumping => inputActions.Player.Jump.triggered;
     public bool shooting => inputActions.Player.Shoot.triggered;
+
     public bool inAiming => inputActions.Player.Aim.triggered;
     public bool outAiming => inputActions.Player.Aim.triggered;
 
@@ -27,9 +30,10 @@ public class InputReader : ScriptableObject, IPlayerActions
         {
             inputActions = new PlayerInputs();
             inputActions.Player.SetCallbacks(this);
-        }    
+        }
         inputActions.Enable();
     }
+
     public void OnMove(InputAction.CallbackContext context)
     {
         Move.Invoke(context.ReadValue<Vector2>());
@@ -48,8 +52,7 @@ public class InputReader : ScriptableObject, IPlayerActions
 
     public void OnAim(InputAction.CallbackContext context)
     {
-        Aim.Invoke(context.ReadValueAsButton());
-
+        Aim.Invoke(context.performed);
     }
 
     public void OnShoot(InputAction.CallbackContext context)

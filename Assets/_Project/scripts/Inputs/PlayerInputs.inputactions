@@ -6,7 +6,7 @@
             "id": "27bb041f-9a9e-4bb2-bb47-e110536883be",
             "actions": [
                 {
-                    "name": "Walk",
+                    "name": "Move",
                     "type": "Value",
                     "id": "52163f54-c34f-4b62-807a-4314de879c27",
                     "expectedControlType": "Vector2",
@@ -31,6 +31,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Aim",
+                    "type": "Button",
+                    "id": "c1f8e158-1396-4ff1-8075-c5b3c3285896",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Shoot",
+                    "type": "Button",
+                    "id": "9cc819a8-e195-4114-baa4-b7b241eb0cf0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -41,7 +59,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Walk",
+                    "action": "Move",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -52,7 +70,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Walk",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -63,7 +81,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Walk",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -74,7 +92,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Walk",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -85,7 +103,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Walk",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -108,6 +126,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "25be3a59-21ad-4e76-81a5-ad7575b6ddfa",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ec4f8cb9-adef-4c81-901f-f75804a26cef",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

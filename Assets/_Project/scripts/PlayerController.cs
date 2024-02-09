@@ -13,7 +13,9 @@ public class PlayerController : MonoBehaviour
     private bool groundedPlayer;
     
     // Settings
-    [SerializeField] float playerSpeed = 2.0f;
+    [SerializeField] float walkSpeed = 2.0f;
+    [SerializeField] float runSpeed = 5.0f;
+    [SerializeField] float crouchSpeed = 1.0f;
     [SerializeField] float jumpHeight = 1.0f;
     [SerializeField] float gravityValue = -9.81f;
     [SerializeField] float rotationSpeed = 8f;
@@ -41,6 +43,7 @@ public class PlayerController : MonoBehaviour
     private float animTransition = .06f;
 
     private bool crouched;
+    private bool running;
     private bool dancing;
     private bool inputsEnableled;
 
@@ -79,8 +82,16 @@ public class PlayerController : MonoBehaviour
 
     private void HandleRun()
     {
-        if (inputs.isRunning) {animator.SetBool(IsRunning, true);}
-        else animator.SetBool(IsRunning, false);
+        if (inputs.isRunning)
+        {
+            running = true;
+            animator.SetBool(IsRunning, true);
+        }
+        else
+        {
+            running = false;
+            animator.SetBool(IsRunning, false);
+        }
     }
 
     private void HandleShoot()
@@ -102,7 +113,11 @@ public class PlayerController : MonoBehaviour
         Vector3 move = new Vector3(blendVector.x, 0, blendVector.y);
         move = move.x * mainCam.right.normalized + move.z * mainCam.forward.normalized;
         move.y = ZeroF;
-        controller.Move(move * (Time.deltaTime * playerSpeed));
+
+        // different motion vector
+        if (crouched) controller.Move(move * (Time.deltaTime * crouchSpeed));
+        else if (running) controller.Move(move * (Time.deltaTime * runSpeed));
+        else controller.Move(move * (Time.deltaTime * walkSpeed));
         
         if (move.magnitude > ZeroF) animator.SetBool(IsMoving,true);
         

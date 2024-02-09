@@ -10,9 +10,7 @@ public class SwitchCamera : MonoBehaviour
     [SerializeField] int priorityBoostAmount = 10;
     private CinemachineVirtualCamera virtualCamera;
     private bool isPriorityBoosted = false;
-
-    bool trigger;
-
+    
     private void Awake()
     {
         virtualCamera = GetComponent<CinemachineVirtualCamera>();

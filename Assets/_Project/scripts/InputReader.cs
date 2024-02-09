@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -11,10 +12,12 @@ public class InputReader : ScriptableObject, IPlayerActions
     public event UnityAction<bool> Jump = delegate {  };
     public event UnityAction<bool> Aim = delegate {  };
     public event UnityAction<bool> Shoot = delegate {  };
+    public event UnityAction<bool> Run = delegate {  };
+    public event UnityAction<bool> Crouch = delegate {  };
 
     private PlayerInputs inputActions;
 
-    public InputAction aimAction;
+    public InputAction crouchAction;
 
     public Vector3 movement => inputActions.Player.Move.ReadValue<Vector2>();
     public Vector3 looking => inputActions.Player.Look.ReadValue<Vector2>();
@@ -23,6 +26,9 @@ public class InputReader : ScriptableObject, IPlayerActions
 
     public bool inAiming => inputActions.Player.Aim.triggered;
     public bool outAiming => inputActions.Player.Aim.triggered;
+    
+    public bool isRunning => inputActions.Player.Run.IsPressed();
+    public bool crounching => inputActions.Player.Crouch.triggered;
 
     void OnEnable()
     {
@@ -32,6 +38,12 @@ public class InputReader : ScriptableObject, IPlayerActions
             inputActions.Player.SetCallbacks(this);
         }
         inputActions.Enable();
+        crouchAction = inputActions.FindAction("Crouch");
+    }
+
+    private void OnDisable()
+    {
+        crouchAction.Disable();
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -58,5 +70,17 @@ public class InputReader : ScriptableObject, IPlayerActions
     public void OnShoot(InputAction.CallbackContext context)
     {
         Shoot.Invoke(context.ReadValueAsButton());
+    }
+
+    public void OnRun(InputAction.CallbackContext context)
+    {
+        Run.Invoke(context.performed);
+
+    }
+
+    public void OnCrouch(InputAction.CallbackContext context)
+    {
+        Crouch.Invoke(context.performed);
+
     }
 }

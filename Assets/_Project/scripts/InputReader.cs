@@ -60,7 +60,7 @@ public class InputReader : ScriptableObject, IPlayerActions
 
     public void OnShoot(InputAction.CallbackContext context)
     {
-        Shoot.Invoke(context.ReadValueAsButton());
+        Shoot.Invoke(context.performed);
     }
 
     public void OnRun(InputAction.CallbackContext context)

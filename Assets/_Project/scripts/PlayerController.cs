@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController), typeof(PlayerInputs))]
 public class PlayerController : MonoBehaviour
 {
+    // References
     [SerializeField] CharacterController controller;
     [SerializeField] InputReader inputs;
     [SerializeField] Animator animator;
@@ -10,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 playerVelocity;
     private bool groundedPlayer;
     
+    // Settings
     [SerializeField] float playerSpeed = 2.0f;
     [SerializeField] float jumpHeight = 1.0f;
     [SerializeField] float gravityValue = -9.81f;
@@ -17,8 +20,8 @@ public class PlayerController : MonoBehaviour
 
     private Transform mainCam;
 
+    // All states
     private readonly int InitialState = Animator.StringToHash("Locomotion");
-    
     private readonly int MoveX = Animator.StringToHash("MoveX");
     private readonly int MoveZ = Animator.StringToHash("MoveZ");
     private readonly int IsMoving = Animator.StringToHash("isMoving");
@@ -27,8 +30,10 @@ public class PlayerController : MonoBehaviour
     private readonly int Crouch = Animator.StringToHash("Crouch");
     private readonly int Dance = Animator.StringToHash("Dance");
     
-    bool jumpAnim;
-
+    // Shoot Layer
+    private readonly int Shoot = Animator.StringToHash("MagicAttack");
+    
+    // Params
     private const float ZeroF = 0.0f;
     private Vector2 blendVector;
     private Vector2 animVelocity;
@@ -37,8 +42,8 @@ public class PlayerController : MonoBehaviour
 
     private bool crouched;
     private bool dancing;
-
     private bool inputsEnableled;
+
     
     private void Start()
     {
@@ -58,20 +63,40 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+        if (inputsEnableled)
+        {
+            HandleMovement();
+            HandleRun();
+            HandleShoot();
+        }
+    }
+
+    private void CheckGroundedPlayer()
+    {
+        groundedPlayer = controller.isGrounded;
+        if (groundedPlayer && playerVelocity.y < 0) playerVelocity.y = 0f;
+    }
+
+    private void HandleRun()
+    {
         if (inputs.isRunning) {animator.SetBool(IsRunning, true);}
         else animator.SetBool(IsRunning, false);
+    }
 
-        if (inputsEnableled) HandleMovement();
+    private void HandleShoot()
+    {
+        if (inputs.shooting)
+        {
+            Debug.Log("Shoot");
+            animator.CrossFade(Shoot, animTransition);
+        }
     }
 
     private void HandleMovement()
     {
         groundedPlayer = controller.isGrounded;
-        if (groundedPlayer && playerVelocity.y < 0)
-        {
-            playerVelocity.y = 0f;
-        }
-
+        if (groundedPlayer && playerVelocity.y < 0) playerVelocity.y = 0f;
+        
         blendVector = Vector2.SmoothDamp(blendVector, inputs.movement, ref animVelocity, smoothTime);
         
         Vector3 move = new Vector3(blendVector.x, 0, blendVector.y);
@@ -119,9 +144,8 @@ public class PlayerController : MonoBehaviour
         {
             inputsEnableled = false;
             animator.CrossFade(Dance, animTransition);
-
         }
-
+        
         else
         {
             inputsEnableled = true;

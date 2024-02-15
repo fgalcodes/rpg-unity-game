@@ -31,10 +31,12 @@ public class PlayerController : MonoBehaviour
     private readonly int Jump = Animator.StringToHash("Jumping");
     private readonly int Crouch = Animator.StringToHash("Crouch");
     private readonly int Dance = Animator.StringToHash("Dance");
-    
+
     // Shoot Layer
-    private readonly int Shoot = Animator.StringToHash("MagicAttack");
-    
+    //private readonly int Shoot = Animator.StringToHash("MagicAttack");
+    //private readonly int Shoot = Animator.StringToHash("ShootingArrow");
+    private readonly int Shoot = Animator.StringToHash("Shooting");
+
     // Params
     private const float ZeroF = 0.0f;
     private Vector2 blendVector;
@@ -97,7 +99,7 @@ public class PlayerController : MonoBehaviour
     private void HandleShoot()
     {
         if (inputs.shooting)
-        {
+        {   
             Debug.Log("Shoot");
             animator.CrossFade(Shoot, animTransition);
         }

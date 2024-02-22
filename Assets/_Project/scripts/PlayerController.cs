@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(CharacterController), typeof(PlayerInputs))]
 public class PlayerController : MonoBehaviour
@@ -10,6 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Animator animator;
     
     private Vector3 playerVelocity;
+    private Vector3 playerRotation;
     private bool groundedPlayer;
     
     // Settings
@@ -31,6 +33,8 @@ public class PlayerController : MonoBehaviour
     private readonly int Jump = Animator.StringToHash("Jumping");
     private readonly int Crouch = Animator.StringToHash("Crouch");
     private readonly int Dance = Animator.StringToHash("Dance");
+
+    private readonly int rightTurn = Animator.StringToHash("rightTurn");
 
     // Shoot Layer
     //private readonly int Shoot = Animator.StringToHash("MagicAttack");
@@ -130,7 +134,7 @@ public class PlayerController : MonoBehaviour
         // Changes the height position of the player..
         if (inputs.jumping && groundedPlayer)
         {
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+            playerVelocity.y += Mathf.Sqrt(jumpHeight * -0.8f * gravityValue);
             animator.CrossFade(Jump, animTransition);
         }
 
@@ -140,6 +144,24 @@ public class PlayerController : MonoBehaviour
         // Rotate towards camera direction
         Quaternion targetRotation = Quaternion.Euler(0, mainCam.eulerAngles.y, 0);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+        //if (transform.rotation.y > .2)
+        //{
+        //    playerRotation.y = transform.rotation.y;
+        //    if (playerRotation.y > 0)
+        //    {
+        //        animator.SetBool(rightTurn, true);    
+        //    }
+        //}
+        //else if (transform.rotation.y < -.2)
+        //{
+        //    animator.SetBool(rightTurn, true);
+        //}
+        //else
+        //{
+        //    animator.SetBool(rightTurn, false);
+        //}
+
     }
 
     private void HandleCrouch(bool arg0)

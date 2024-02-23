@@ -34,7 +34,8 @@ public class PlayerController : MonoBehaviour
     private readonly int Crouch = Animator.StringToHash("Crouch");
     private readonly int Dance = Animator.StringToHash("Dance");
 
-    private readonly int rightTurn = Animator.StringToHash("rightTurn");
+    private readonly int rightTurn = Animator.StringToHash("RightTurn");
+    private readonly int leftTurn = Animator.StringToHash("LeftTurn");
 
     // Shoot Layer
     //private readonly int Shoot = Animator.StringToHash("MagicAttack");
@@ -53,6 +54,9 @@ public class PlayerController : MonoBehaviour
     private bool dancing;
     private bool inputsEnableled;
 
+    private bool isTurning;
+    private bool isTurningLeft;
+    private bool isTurningRight;
     
     private void Start()
     {
@@ -145,23 +149,18 @@ public class PlayerController : MonoBehaviour
         Quaternion targetRotation = Quaternion.Euler(0, mainCam.eulerAngles.y, 0);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
-        //if (transform.rotation.y > .2)
-        //{
-        //    playerRotation.y = transform.rotation.y;
-        //    if (playerRotation.y > 0)
-        //    {
-        //        animator.SetBool(rightTurn, true);    
-        //    }
-        //}
-        //else if (transform.rotation.y < -.2)
-        //{
-        //    animator.SetBool(rightTurn, true);
-        //}
-        //else
-        //{
-        //    animator.SetBool(rightTurn, false);
-        //}
+        // Check if the rotation angle crosses a threshold
+        if (Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y) > 90)
+        {
+            // Toggle turning direction
+            isTurning = !isTurning;
 
+            // Crossfade animation based on turning direction
+            if (isTurning)
+                animator.CrossFade(rightTurn, animTransition);
+            else
+                animator.CrossFade(InitialState, animTransition);
+        }
     }
 
     private void HandleCrouch(bool arg0)

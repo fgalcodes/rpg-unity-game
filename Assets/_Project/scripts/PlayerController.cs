@@ -148,19 +148,6 @@ public class PlayerController : MonoBehaviour
         // Rotate towards camera direction
         Quaternion targetRotation = Quaternion.Euler(0, mainCam.eulerAngles.y, 0);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
-        // Check if the rotation angle crosses a threshold
-        if (Mathf.Abs(transform.rotation.eulerAngles.y - targetRotation.eulerAngles.y) > 90)
-        {
-            // Toggle turning direction
-            isTurning = !isTurning;
-
-            // Crossfade animation based on turning direction
-            if (isTurning)
-                animator.CrossFade(rightTurn, animTransition);
-            else
-                animator.CrossFade(InitialState, animTransition);
-        }
     }
 
     private void HandleCrouch(bool arg0)

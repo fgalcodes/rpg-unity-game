@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] CharacterController controller;
     [SerializeField] InputReader inputs;
     [SerializeField] Animator animator;
+    [SerializeField] AutoSave autosave;
     
     private Vector3 playerVelocity;
     private Vector3 playerRotation;
@@ -57,17 +58,23 @@ public class PlayerController : MonoBehaviour
     private bool isTurning;
     private bool isTurningLeft;
     private bool isTurningRight;
-    
+
+    private void Awake()
+    {
+        transform.position = autosave.pointSave;
+    }
     private void Start()
     {
         mainCam = Camera.main.transform;
         inputsEnableled = true;
+        autosave.pointSave = transform.position;
     }
     private void OnEnable()
     {
         inputs.Crouch += HandleCrouch;
         inputs.Dance += HandleDance;
     }
+
 
     private void OnDisable()
     {
@@ -81,6 +88,12 @@ public class PlayerController : MonoBehaviour
             HandleMovement();
             HandleRun();
             HandleShoot();
+        }
+
+        if (inputs.pointSave)
+        {
+            autosave.pointSave = transform.position;
+            Debug.Log("Save!" + autosave.pointSave);
         }
     }
 

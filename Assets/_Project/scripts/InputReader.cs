@@ -15,6 +15,7 @@ public class InputReader : ScriptableObject, IPlayerActions
     public event UnityAction<bool> Run = delegate {  };
     public event UnityAction<bool> Crouch = delegate {  };
     public event UnityAction<bool> Dance = delegate {  };
+    public event UnityAction<bool> Save = delegate {  };
 
     private PlayerInputs inputActions;
     
@@ -22,6 +23,7 @@ public class InputReader : ScriptableObject, IPlayerActions
     public Vector3 looking => inputActions.Player.Look.ReadValue<Vector2>();
     public bool jumping => inputActions.Player.Jump.triggered;
     public bool shooting => inputActions.Player.Shoot.triggered;
+    public bool pointSave => inputActions.Player.Save.triggered;
 
     public bool aiming => inputActions.Player.Aim.triggered;
     public bool isRunning => inputActions.Player.Run.IsPressed();
@@ -76,5 +78,11 @@ public class InputReader : ScriptableObject, IPlayerActions
     public void OnDance(InputAction.CallbackContext context)
     {
         Dance.Invoke(context.performed);
+    }
+
+    public void OnSave(InputAction.CallbackContext context)
+    {
+        Save.Invoke(context.performed);
+
     }
 }

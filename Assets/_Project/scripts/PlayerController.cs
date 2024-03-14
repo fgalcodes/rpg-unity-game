@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(CharacterController), typeof(PlayerInputs))]
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] DbStats dbStats;
     // References
     [SerializeField] CharacterController controller;
     [SerializeField] InputReader inputs;
@@ -94,6 +95,10 @@ public class PlayerController : MonoBehaviour
         {
             autosave.pointSave = transform.position;
             Debug.Log("Save!" + autosave.pointSave);
+
+            dbStats.SaveIntoJson();
+            Debug.Log(dbStats.GetPath());
+
         }
     }
 

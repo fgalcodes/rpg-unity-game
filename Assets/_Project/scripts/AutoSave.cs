@@ -6,5 +6,4 @@ using UnityEngine;
 public class AutoSave : ScriptableObject
 {
     public Vector3 pointSave;
-
 }

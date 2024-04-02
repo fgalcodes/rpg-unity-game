@@ -5,13 +5,13 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(CharacterController), typeof(PlayerInputs))]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] DbStats dbStats;
+    public static PlayerController Instance;
     // References
     [SerializeField] CharacterController controller;
     [SerializeField] InputReader inputs;
     [SerializeField] Animator animator;
     [SerializeField] AutoSave autosave;
-    
+
     private Vector3 playerVelocity;
     private Vector3 playerRotation;
     private bool groundedPlayer;
@@ -62,7 +62,18 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        transform.position = autosave.pointSave;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            transform.position = autosave.pointSave;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+
+
     }
     private void Start()
     {
@@ -95,10 +106,6 @@ public class PlayerController : MonoBehaviour
         {
             autosave.pointSave = transform.position;
             Debug.Log("Save!" + autosave.pointSave);
-
-            dbStats.SaveIntoJson();
-            Debug.Log(dbStats.GetPath());
-
         }
     }
 

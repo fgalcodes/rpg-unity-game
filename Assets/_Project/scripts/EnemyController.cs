@@ -6,7 +6,7 @@ public class EnemyController : MonoBehaviour
 {
     private Transform player;
     private GameObject playerObject;
-    private Rigidbody2D rb;
+    private Rigidbody rb;
     public float moveSpeed = 5f;
 
     public bool InitChase;
@@ -16,7 +16,7 @@ public class EnemyController : MonoBehaviour
     {
         playerObject = GameObject.FindGameObjectWithTag("Player");
         player = playerObject.transform;
-        rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody>();
 
     }
     private void Update()
@@ -29,11 +29,13 @@ public class EnemyController : MonoBehaviour
 
     public void ChasePlayer()
     {
-        Vector3 direction = player.position - transform.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        rb.rotation = angle;
-        direction.Normalize();
-        rb.MovePosition(transform.position + (direction * moveSpeed * Time.deltaTime));
+        var position = transform.position;
+        Vector3 direction = player.position - position;
+        Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction);
+        transform.rotation = rotation;
 
+        direction.Normalize();
+        position += direction * (moveSpeed * Time.deltaTime);
+        transform.position = position;
     }
 }

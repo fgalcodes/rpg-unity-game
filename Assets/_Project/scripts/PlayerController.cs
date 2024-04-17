@@ -60,21 +60,6 @@ public class PlayerController : MonoBehaviour
     private bool isTurningLeft;
     private bool isTurningRight;
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-            transform.position = autosave.pointSave;
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
-
-
-    }
     private void Start()
     {
         mainCam = Camera.main.transform;
